@@ -6,6 +6,8 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { login } from '../actions/userActions'
+import { GoogleLogin } from 'react-google-login'
+import { AUTH_SUCCESS } from '../constants/userConstants'
 
 const LoginScreen = ({ location, history }) => {
 	const [email, setEmail] = useState('')
@@ -45,7 +47,7 @@ const LoginScreen = ({ location, history }) => {
 				</Form.Group>
 
 				<Form.Group controlId='password'>
-					<Form.Label>Password Address</Form.Label>
+					<Form.Label>Password</Form.Label>
 					<Form.Control
 						type='password'
 						placeholder='Enter password'
