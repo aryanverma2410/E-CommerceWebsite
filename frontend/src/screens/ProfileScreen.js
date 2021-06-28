@@ -14,6 +14,7 @@ const ProfileScreen = ({ location, history }) => {
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
 	const [message, setMessage] = useState(null)
+	const [isConfirmed, setIsConfirmed] = useState(false)
 
 	const dispatch = useDispatch()
 
@@ -40,6 +41,7 @@ const ProfileScreen = ({ location, history }) => {
 			} else {
 				setName(user.name)
 				setEmail(user.email)
+				setIsConfirmed(user.isConfirmed)
 			}
 		}
 	}, [dispatch, history, userInfo, user, success])
@@ -60,6 +62,7 @@ const ProfileScreen = ({ location, history }) => {
 				{message && <Message variant='danger'>{message}</Message>}
 				{}
 				{success && <Message variant='success'>Profile Updated</Message>}
+
 				{loading ? (
 					<Loader />
 				) : error ? (
@@ -83,6 +86,15 @@ const ProfileScreen = ({ location, history }) => {
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}></Form.Control>
 						</Form.Group>
+						{user.isConfirmed ? (
+							<i className='fas fa-check' style={{ color: 'green' }}>
+								Verified
+							</i>
+						) : (
+							<i className='fas fa-times' style={{ color: 'red' }}>
+								Not Verified
+							</i>
+						)}
 
 						<Form.Group controlId='password'>
 							<Form.Label>Password</Form.Label>

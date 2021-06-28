@@ -1,5 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
+import jwt from 'jsonwebtoken'
+import generateEmailToken from '../utils/generateEmailToken.js'
 import generateToken from '../utils/generateToken.js'
 // @desc Auth user & get token
 // @route POST /api/user/login
@@ -33,7 +35,6 @@ const registerUser = asyncHandler(async (req, res) => {
 		res.status(400)
 		throw new Error('User alredy exists')
 	}
-
 	const user = await User.create({
 		name,
 		email,
@@ -46,7 +47,9 @@ const registerUser = asyncHandler(async (req, res) => {
 			email: user.email,
 			isAdmin: user.isAdmin,
 			token: generateToken(user._id),
+			emailToken: generateEmailToken(user._id),
 		})
+		user.sendConfirmationEmail(user)
 	} else {
 		res.status(400)
 		throw new Error('Invalid user data')
@@ -64,6 +67,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 			name: user.name,
 			email: user.email,
 			isAdmin: user.isAdmin,
+			isConfirmed: user.isConfirmed,
 		})
 	} else {
 		res.status(401)
@@ -126,9 +130,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 // @route GET /api/users/:id
 // @access Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
-	const user = await User.findById(req.params.id).select(
-		'-password'
-	)
+	const user = await User.findById(req.params.id).select('-password')
 	if (user) {
 		res.json(user)
 	} else {
@@ -162,6 +164,85 @@ const updateUser = asyncHandler(async (req, res) => {
 	}
 })
 
+// @desc    Confirm user email
+// @route   GET /api/users/confirm/:token
+// @access  Public
+// const confirmUser = asyncHandler(async (req, res) => {
+// 	try {
+// 		const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET_EMAIL)
+
+// 		const user = await User.findById(decoded.id).updateOne({
+// 			isConfirmed: true,
+// 		})
+// 		if (user) {
+// 			user.isConfirmed = true
+// 			const updatedUser = await user
+
+// 			res.json({
+// 				_id: updatedUser._id,
+// 				name: updatedUser.name,
+// 				email: updatedUser.email,
+// 				isAdmin: updatedUser.isAdmin,
+// 				isConfirmed: updatedUser.isConfirmed,
+// 			})
+// 			console.log(`confirmed!`.green.underline.bold)
+// 		} else {
+// 			res.status(404)
+// 			throw new Error('User not found')
+// 		}
+// 	} catch (error) {
+// 		console.log(error)
+// 		res.status(401)
+// 		throw new Error('Email Confirmation Failed')
+// 	}
+// })
+
+const getUserByEmailToken = asyncHandler(async (req, res) => {
+	try {
+		const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET_EMAIL)
+
+		const user = await User.findById(decoded.id).select('-password')
+		if (user) {
+			res.json(user)
+		} else {
+			res.status(404)
+			throw new Error('User not found')
+		}
+	} catch (error) {
+		console.log(error)
+		res.status(401)
+		throw new Error('Email Confirmation Failed')
+	}
+})
+
+// @desc    Update user confirm
+// @route   PUT /api/users/confirm/:token
+// @access  Private
+const updateUserConfirm = asyncHandler(async (req, res) => {
+	const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET_EMAIL)
+
+	const user = await User.findById(decoded.id).select('-password')
+
+	if (user) {
+		user.name = req.body.name || user.name
+		user.email = req.body.email || user.email
+		user.isConfirmed = true
+
+		const updatedUser = await user.save()
+
+		res.json({
+			_id: updatedUser._id,
+			name: updatedUser.name,
+			email: updatedUser.email,
+			isAdmin: updatedUser.isAdmin,
+			emailToken: updatedUser.emailToken,
+			isConfirmed: updatedUser.isConfirmed,
+		})
+	} else {
+		res.status(404)
+		throw new Error('User not found')
+	}
+})
 export {
 	authUser,
 	registerUser,
@@ -171,4 +252,6 @@ export {
 	deleteUser,
 	getUserById,
 	updateUser,
+	getUserByEmailToken,
+	updateUserConfirm,
 }

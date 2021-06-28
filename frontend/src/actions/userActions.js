@@ -24,6 +24,9 @@ import {
 	USER_UPDATE_FAIL,
 	USER_UPDATE_SUCCESS,
 	USER_UPDATE_REQUEST,
+	USER_CONFIRM_REQUEST,
+	USER_CONFIRM_SUCCESS,
+	USER_CONFIRM_FAIL,
 } from '../constants/userConstants'
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
@@ -300,6 +303,74 @@ export const updateUser = (user) => async (dispatch, getState) => {
 		dispatch({
 			type: USER_UPDATE_FAIL,
 			payload: message,
+		})
+	}
+}
+
+export const getUserConfirmDetails =
+	(emailToken) => async (dispatch, getState) => {
+		try {
+			dispatch({
+				type: USER_DETAILS_REQUEST,
+			})
+
+			// const {
+			// 	userLogin: { userInfo },
+			// } = getState()
+
+			// const config = {
+			// 	headers: {
+			// 		Authorization: `Bearer ${userInfo.token}`,
+			// 	},
+			// }
+
+			const { data } = await axios.get(`/api/users/confirmation/${emailToken}`)
+
+			dispatch({
+				type: USER_DETAILS_SUCCESS,
+				payload: data,
+			})
+		} catch (error) {
+			const message =
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+
+			dispatch({
+				type: USER_DETAILS_FAIL,
+				payload: message,
+			})
+		}
+	}
+
+export const confirmUser = (emailToken) => async (dispatch) => {
+	try {
+		dispatch({
+			type: USER_CONFIRM_REQUEST,
+		})
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}
+
+		const { data } = await axios.put(
+			`/api/users/confirmation/${emailToken}`,
+			config
+		)
+
+		dispatch({
+			type: USER_CONFIRM_SUCCESS,
+			payload: data,
+		})
+	} catch (error) {
+		dispatch({
+			type: USER_CONFIRM_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
 		})
 	}
 }
