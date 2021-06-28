@@ -3,7 +3,9 @@ import bcrypt from 'bcryptjs'
 import nodemailer from 'nodemailer'
 import generateEmailToken from '../utils/generateEmailToken.js'
 import { google } from 'googleapis'
+
 const OAuth2 = google.auth.OAuth2
+
 const userSchema = mongoose.Schema(
 	{
 		name: {
@@ -61,37 +63,45 @@ const createTransporter = async () => {
 		refresh_token: process.env.GMAIL_REFRESH_TOKEN,
 	})
 
-	// const accessToken = await new Promise((resolve, reject) => {
-	// 	oauth2Client.getAccessToken((err, token) => {
-	// 		if (err) {
-	// 			console.log(TOKEN_PATH)
-	// 			reject('Failed to create access token :(')
-	// 		}
-	// 		resolve(token)
-	// 	})
-	// })
-	// 	.then(() => {
-	// 		console.log(`Access Token Recieved`)
-	// 	})
-	// 	.catch((error) => {
-	// 		console.log(`Access Token Recieved`)
-	// 		console.error(error)
-	// 	})
+	const accessToken = await new Promise((resolve, reject) => {
+		oauth2Client.getAccessToken((err, token) => {
+			if (err) {
+				reject('Failed to create access token :(')
+				console.log(err)
+			}
+			resolve(token)
+		})
+	})
+		.then(() => {
+			console.log(`accessToken recieved`)
+		})
+		.catch((error) => {
+			console.log(`Access token not recieved`)
+			console.error(error)
+		})
 
 	const transporter = nodemailer.createTransport({
-		//creating transport for sending mails
-		// host: 'smtp.gmail.com',
-		// port: 465,
-		// secure: true,
 		service: 'gmail',
 		auth: {
 			type: 'OAuth2',
 			user: process.env.GMAIL_USER,
+			accessToken,
 			clientId: process.env.GMAIL_CLIENT_ID,
 			clientSecret: process.env.GMAIL_CLIENT_SECRET,
 			refreshToken: process.env.GMAIL_REFRESH_TOKEN,
 		},
+		tls: {
+			rejectUnauthorized: false,
+		},
 	})
+	// transporter.set('oauth2_provision_cb', (GMAIL_CLIENT_ID, renew, callback) => {
+	// 	let accessToken = userTokens[GMAIL_CLIENT_ID]
+	// 	if (!accessToken) {
+	// 		return callback(new Error('Unknown user'))
+	// 	} else {
+	// 		return callback(null, accessToken)
+	// 	}
+	// })
 	return transporter
 }
 
@@ -107,18 +117,18 @@ userSchema.methods.sendConfirmationEmail = async function (enteredUser) {
 	const url = `http://localhost:3000/api/user/confirmation/${emailToken}`
 	const url2 = `https://avproshop.herokuapp.com/api/user/confirmation/${emailToken}`
 	let emailTransporter = await createTransporter()
-	emailTransporter
+	await emailTransporter
 		.sendMail({
 			from: process.env.GMAIL_USER,
 			to: `${enteredUser.email}`,
 			subject: 'ConfirmationEmail',
-			html: `Dear ${enteredUser.name} please confirm your Email <a href=${url}>Click Here</a>	 <br> If Above link dosen't work, <a href=${url2}>click Here</a>`,
+			html: `Dear ${enteredUser.name} please confirm your Email <a href=${url2}>Click Here</a>  <br> If Above link dosen't work, <a href=${url}>click Here</a>`,
 			//
 			auth: {
 				user: process.env.GMAIL_USER,
 				refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-				accessToken:
-					'ya29.a0ARrdaM_MO6qlEpOzzOZ8SiZmfyFs0d4BFbhpcfCuPYWN9im6i5miUBzquIqxE8OKagjfmkcp3TiIJrKU5M8o_2e_7bBdibyRqyABBHwqi7xl5l27D7cc6h7G6ggbsgUBs2rFdxQ7HurAJJpu7JqBeI1F1Vn9',
+				// 	accessToken:
+				// 		'ya29.a0ARrdaM9PMQClc-5BPH4TvAUzmLRIe2ip93SjHJM_f0sOxrzPz3wCFEjGfO1DekLkW2nQdQWVk9xk669I_Z-4bYhNMlLeYd9RWAHv3ad2_ALjYMXWKV-QZFvPhNhrvezuIL-ZgM-ZvVxy4hIEW1-rWmjcL3vq',
 			},
 		})
 		.then(() => {
@@ -127,7 +137,9 @@ userSchema.methods.sendConfirmationEmail = async function (enteredUser) {
 			)
 		})
 		.catch((error) => {
-			console.log(`${enteredUser.name} Email was not sent`)
+			console.log(
+				`${enteredUser.name} <${enteredUser.email}> Email was not sent`
+			)
 			console.error(error)
 		})
 }
