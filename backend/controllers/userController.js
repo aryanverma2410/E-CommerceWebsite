@@ -112,7 +112,7 @@ const getUsers = asyncHandler(async (req, res) => {
 })
 
 // @desc Delete User
-// @route DELTE /api/users/:id
+// @route DELTE /api/users/:import {  } from 'module'
 // @access Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.params.id)

@@ -100,19 +100,19 @@ userSchema.methods.sendConfirmationEmail = async function (enteredUser) {
 	const emailToken = generateEmailToken(enteredUser._id)
 
 	// if (process.env.NODE_ENV === 'developement') {
-	// 	const url = `http://localhost:3000/api/users/confirmation/${emailToken}`
+	// 	const url = `http://localhost:3000/api/user/confirmation/${emailToken}`
 	// } else {
-	// 	const url = `https://avproshop.herokuapp.com/api/users/confirmation/${emailToken}`
+	// 	const url = `https://avproshop.herokuapp.com/api/user/confirmation/${emailToken}`
 	// }
-	const url = `http://localhost:3000/api/users/confirmation/${emailToken}`
-	const url2 = `https://avproshop.herokuapp.com/api/users/confirmation/${emailToken}`
+	const url = `http://localhost:3000/api/user/confirmation/${emailToken}`
+	const url2 = `https://avproshop.herokuapp.com/api/user/confirmation/${emailToken}`
 	let emailTransporter = await createTransporter()
 	emailTransporter
 		.sendMail({
 			from: process.env.GMAIL_USER,
 			to: `${enteredUser.email}`,
 			subject: 'ConfirmationEmail',
-			html: `Dear ${enteredUser.name} please confirm your Email <a href=${url}>Click Here</a>	 <br> If Above link dosen't , <a href=${url2}>Click Here</a>`,
+			html: `Dear ${enteredUser.name} please confirm your Email <a href=${url}>Click Here</a>	 <br> If Above link dosen't work, <a href=${url2}>click Here</a>`,
 			//
 			auth: {
 				user: process.env.GMAIL_USER,

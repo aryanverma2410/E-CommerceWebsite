@@ -38,7 +38,7 @@ const App = () => {
 					<Route path='/admin/userlist' component={UserListScreen} />
 					<Route path='/admin/user/:id/edit' component={UserEditScreen} />
 					<Route
-						path='/api/users/confirmation/:token'
+						path='/api/user/confirmation/:token'
 						component={UserConfirmScreen}
 					/>
 					<Route
