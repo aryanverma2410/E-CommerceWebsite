@@ -198,20 +198,14 @@ const updateUser = asyncHandler(async (req, res) => {
 // })
 
 const getUserByEmailToken = asyncHandler(async (req, res) => {
-	try {
-		const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET_EMAIL)
+	const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET_EMAIL)
 
-		const user = await User.findById(decoded.id).select('-password')
-		if (user) {
-			res.json(user)
-		} else {
-			res.status(404)
-			throw new Error('User not found')
-		}
-	} catch (error) {
-		console.log(error)
-		res.status(401)
-		throw new Error('Email Confirmation Failed')
+	const user = await User.findById(decoded.id).select('-password')
+	if (user) {
+		res.json(user)
+	} else {
+		res.status(404)
+		throw new Error('User not found')
 	}
 })
 

@@ -98,19 +98,27 @@ const createTransporter = async () => {
 userSchema.methods.sendConfirmationEmail = async function (enteredUser) {
 	//send mail fucntion
 	const emailToken = generateEmailToken(enteredUser._id)
+
+	// if (process.env.NODE_ENV === 'developement') {
+	// 	const url = `http://localhost:3000/api/users/confirmation/${emailToken}`
+	// } else {
+	// 	const url = `https://avproshop.herokuapp.com/api/users/confirmation/${emailToken}`
+	// }
 	const url = `http://localhost:3000/api/users/confirmation/${emailToken}`
+	const url2 = `https://avproshop.herokuapp.com/api/users/confirmation/${emailToken}`
 	let emailTransporter = await createTransporter()
 	emailTransporter
 		.sendMail({
 			from: process.env.GMAIL_USER,
 			to: `${enteredUser.email}`,
 			subject: 'ConfirmationEmail',
-			html: `Dear ${enteredUser.name} please confirm your Email <a href=${url}>${url}</a>`,
+			html: `Dear ${enteredUser.name} please confirm your Email <a href=${url}>Click Here</a>	 <br> If Above link dosen't , <a href=${url2}>Click Here</a>`,
+			//
 			auth: {
 				user: process.env.GMAIL_USER,
 				refreshToken: process.env.GMAIL_REFRESH_TOKEN,
 				accessToken:
-					'ya29.a0ARrdaM_fvKifRkBV-c1YlGSQwdEtVBnZSdvLr1sBEMI4pHi02n7JEhQruGbEucTKMXve1CfROMOXJWx0-p_UoWg6RBi1MLv0lfQJRn7OK6uJW4cUhydN9DQKtNflHI9hksDKuS0dpxPuBQsw21kOfHiHRnz1',
+					'ya29.a0ARrdaM_MO6qlEpOzzOZ8SiZmfyFs0d4BFbhpcfCuPYWN9im6i5miUBzquIqxE8OKagjfmkcp3TiIJrKU5M8o_2e_7bBdibyRqyABBHwqi7xl5l27D7cc6h7G6ggbsgUBs2rFdxQ7HurAJJpu7JqBeI1F1Vn9',
 			},
 		})
 		.then(() => {

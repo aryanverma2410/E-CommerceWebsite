@@ -54,7 +54,7 @@ const UserConfirmScreen = ({ match, history }) => {
 	const submitHandler = (e) => {
 		e.preventDefault()
 		dispatch(confirmUser(emailToken))
-		alert(`Your E-mail ID is confirmed!Sign In..${name}`)
+		alert(`Your E-mail ID is confirmed!Sign In..`)
 		history.push('/login')
 	}
 
