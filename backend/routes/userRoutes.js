@@ -11,11 +11,13 @@ import {
 	updateUser,
 	getUserByEmailToken,
 	updateUserConfirm,
+	resendUserConfirmationMail,
 } from '../controllers/userController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
 router.route('/').post(registerUser).get(protect, admin, getUsers)
 router.post('/login', authUser)
+router.put('/:id/resend', protect, resendUserConfirmationMail)
 router
 	.route('/confirmation/:token')
 	.get(getUserByEmailToken)

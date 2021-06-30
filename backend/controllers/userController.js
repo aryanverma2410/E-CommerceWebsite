@@ -237,6 +237,22 @@ const updateUserConfirm = asyncHandler(async (req, res) => {
 		throw new Error('User not found')
 	}
 })
+
+// @desc Resend User confirmation mail
+// @route PUT /api/users/profile/resend
+// @access Private
+const resendUserConfirmationMail = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.params.id)
+
+	if (user) {
+		user.sendConfirmationEmail(user)
+		res.json({ message: 'Email Sent!' })
+	} else {
+		res.status(404)
+		throw new Error('User not Found')
+	}
+})
+
 export {
 	authUser,
 	registerUser,
@@ -248,4 +264,5 @@ export {
 	updateUser,
 	getUserByEmailToken,
 	updateUserConfirm,
+	resendUserConfirmationMail,
 }

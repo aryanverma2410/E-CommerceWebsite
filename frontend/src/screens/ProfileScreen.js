@@ -4,7 +4,11 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getUserDetails, updateUserProfile } from '../actions/userActions'
+import {
+	getUserDetails,
+	resendConfirmationEmail,
+	updateUserProfile,
+} from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
@@ -27,6 +31,16 @@ const ProfileScreen = ({ location, history }) => {
 	const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
 	const { success } = userUpdateProfile
 
+	const userConfirm = useSelector((state) => state.userConfirm)
+	const { success: successConfirm } = userConfirm
+
+	const resendConfirmEmail = useSelector((state) => state.resendConfirmEmail)
+	const {
+		loading: loadingResend,
+		error: errorResend,
+		success: successResend,
+	} = resendConfirmEmail
+
 	const orderListMy = useSelector((state) => state.orderListMy)
 	const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
 
@@ -44,7 +58,7 @@ const ProfileScreen = ({ location, history }) => {
 				setIsConfirmed(user.isConfirmed)
 			}
 		}
-	}, [dispatch, history, userInfo, user, success])
+	}, [dispatch, history, userInfo, user, success, successConfirm])
 
 	const submitHandler = (e) => {
 		e.preventDefault()
@@ -54,6 +68,11 @@ const ProfileScreen = ({ location, history }) => {
 			dispatch(updateUserProfile({ id: user._id, name, email, password }))
 		}
 	}
+	const resendHandler = (id) => {
+		//if (window.confirm('Are you sure?')) {
+		dispatch(resendConfirmationEmail(user))
+		//}
+	}
 
 	return (
 		<Row>
@@ -62,11 +81,14 @@ const ProfileScreen = ({ location, history }) => {
 				{message && <Message variant='danger'>{message}</Message>}
 				{}
 				{success && <Message variant='success'>Profile Updated</Message>}
+				{successResend && (
+					<Message variant='success'>Verification Mail sent.</Message>
+				)}
 
 				{loading ? (
 					<Loader />
 				) : error ? (
-					<Message variant='danger'>{error}</Message>
+					<Message variant='success'>{error}</Message>
 				) : (
 					<Form onSubmit={submitHandler}>
 						<Form.Group controlId='name'>
@@ -93,6 +115,16 @@ const ProfileScreen = ({ location, history }) => {
 						) : (
 							<i className='fas fa-times' style={{ color: 'red' }}>
 								Not Verified
+								{loadingResend ? (
+									<Loader />
+								) : (
+									<Button
+										className='btn btn-sm'
+										variant='outline-danger'
+										onClick={resendHandler}>
+										Resend Verification Mail
+									</Button>
+								)}
 							</i>
 						)}
 

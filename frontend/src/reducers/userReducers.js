@@ -28,6 +28,9 @@ import {
 	USER_CONFIRM_REQUEST,
 	USER_CONFIRM_SUCCESS,
 	USER_CONFIRM_FAIL,
+	USER_RESEND_REQUEST,
+	USER_RESEND_SUCCESS,
+	USER_RESEND_FAIL,
 } from '../constants/userConstants'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -142,6 +145,19 @@ export const userConfirmReducer = (state = {}, action) => {
 		case USER_CONFIRM_SUCCESS:
 			return { loading: false, userInfo: action.payload }
 		case USER_CONFIRM_FAIL:
+			return { loading: false, error: action.payload }
+		default:
+			return state
+	}
+}
+
+export const resendConfirmEmailReducer = (state = {}, action) => {
+	switch (action.type) {
+		case USER_RESEND_REQUEST:
+			return { loading: true }
+		case USER_RESEND_SUCCESS:
+			return { loading: false, success: true, userInfo: action.payload }
+		case USER_RESEND_FAIL:
 			return { loading: false, error: action.payload }
 		default:
 			return state

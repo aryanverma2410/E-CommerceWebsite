@@ -27,6 +27,9 @@ import {
 	USER_CONFIRM_REQUEST,
 	USER_CONFIRM_SUCCESS,
 	USER_CONFIRM_FAIL,
+	USER_RESEND_REQUEST,
+	USER_RESEND_SUCCESS,
+	USER_RESEND_FAIL,
 } from '../constants/userConstants'
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
@@ -371,6 +374,44 @@ export const confirmUser = (emailToken) => async (dispatch) => {
 				error.response && error.response.data.message
 					? error.response.data.message
 					: error.message,
+		})
+	}
+}
+
+export const resendConfirmationEmail = (user) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: USER_RESEND_REQUEST,
+		})
+
+		const {
+			userLogin: { userInfo },
+		} = getState()
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+
+		const { data } = await axios.put(
+			`/api/users/${user._id}/resend`,
+			user,
+			config
+		)
+
+		dispatch({ type: USER_RESEND_SUCCESS, payload: data })
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout())
+		}
+		dispatch({
+			type: USER_RESEND_FAIL,
+			payload: message,
 		})
 	}
 }
