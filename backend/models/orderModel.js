@@ -10,6 +10,7 @@ const orderSchema = mongoose.Schema(
 			{
 				name: { type: String, required: true },
 				qty: { type: Number, required: true },
+				packagingType: { type: String, required: true },
 				image: { type: String, required: true },
 				price: { type: Number, required: true },
 				product: {
@@ -36,6 +37,11 @@ const orderSchema = mongoose.Schema(
 			email_address: { type: String },
 		},
 		taxPrice: {
+			type: Number,
+			required: true,
+			default: 0.0,
+		},
+		packagingPrice: {
 			type: Number,
 			required: true,
 			default: 0.0,

@@ -43,6 +43,11 @@ export const cartReducer = (
 				...state,
 				paymentMethod: action.payload,
 			}
+		// case CART_SAVE_PACKAGING_TYPE:
+		// 	return {
+		// 		...state,
+		// 		packagingType: action.payload,
+		// 	}
 		case CART_CLEAR_ITEMS:
 			return {
 				...state,

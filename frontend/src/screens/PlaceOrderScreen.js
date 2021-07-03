@@ -33,6 +33,9 @@ const PlaceOrderScreen = ({ history }) => {
 	cart.itemsPrice = addDecimals(
 		cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
 	)
+	cart.packagingPrice = addDecimals(
+		cart.cartItems.reduce((acc, item) => acc + Number(item.packagingType), 0)
+	)
 	cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
 
 	cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
@@ -40,7 +43,8 @@ const PlaceOrderScreen = ({ history }) => {
 	cart.totalPrice = (
 		Number(cart.itemsPrice) +
 		Number(cart.shippingPrice) +
-		Number(cart.taxPrice)
+		Number(cart.taxPrice) +
+		Number(cart.packagingPrice)
 	).toFixed(2)
 
 	const orderCreate = useSelector((state) => state.orderCreate)
@@ -61,6 +65,7 @@ const PlaceOrderScreen = ({ history }) => {
 				shippingAddress: cart.shippingAddress,
 				paymentMethod: cart.paymentMethod,
 				itemsPrice: cart.itemsPrice,
+				packagingPrice: cart.packagingPrice,
 				shippingPrice: cart.shippingPrice,
 				taxPrice: cart.taxPrice,
 				totalPrice: cart.totalPrice,
@@ -113,7 +118,9 @@ const PlaceOrderScreen = ({ history }) => {
 													</Link>
 												</Col>
 												<Col md={4}>
-													{item.qty}x ${item.price}=${item.qty * item.price}
+													{item.qty}x ${item.price} + $
+													{Number(item.packagingType)}=$
+													{item.qty * item.price + Number(item.packagingType)}
 												</Col>
 											</Row>
 										</ListGroupItem>
@@ -133,6 +140,12 @@ const PlaceOrderScreen = ({ history }) => {
 								<Row>
 									<Col>Items</Col>
 									<Col>${cart.itemsPrice}</Col>
+								</Row>
+							</ListGroupItem>
+							<ListGroupItem>
+								<Row>
+									<Col>Packaging</Col>
+									<Col>${cart.packagingPrice}</Col>
 								</Row>
 							</ListGroupItem>
 							<ListGroupItem>

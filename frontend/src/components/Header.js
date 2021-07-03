@@ -17,7 +17,7 @@ const Header = () => {
 	}
 	return (
 		<header>
-			<Navbar bg='primary' variant='dark' expand='lg' collapseOnSelect>
+			<Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
 				<Container>
 					<LinkContainer to='/'>
 						<Navbar.Brand>
@@ -29,7 +29,7 @@ const Header = () => {
 					<Navbar.Collapse id='basic-navbar-nav'>
 						<Route render={({ history }) => <SearchBox history={history} />} />
 						<Nav className='ms-auto'>
-							<LinkContainer to='/'>
+							{/* <LinkContainer to='/'>
 								<Nav.Link> About Us</Nav.Link>
 							</LinkContainer>
 							<LinkContainer to='/'>
@@ -46,7 +46,20 @@ const Header = () => {
 							</LinkContainer>
 							<LinkContainer to='/'>
 								<Nav.Link> Careers</Nav.Link>
-							</LinkContainer>
+							</LinkContainer> */}
+
+							{/******************************************************
+							 ********************ADD CATEGORIES HERE***************
+							 *****************************************************/}
+							<NavDropdown title='Categories' id='categoriesmenu'>
+								<LinkContainer to='/search/electronics'>
+									<NavDropdown.Item>Electronics</NavDropdown.Item>
+								</LinkContainer>
+								<LinkContainer to='/search/music'>
+									<NavDropdown.Item>Music</NavDropdown.Item>
+								</LinkContainer>
+							</NavDropdown>
+
 							<LinkContainer to='/cart'>
 								<Nav.Link>
 									{' '}
@@ -79,6 +92,9 @@ const Header = () => {
 									</LinkContainer>
 									<LinkContainer to='/admin/orderlist'>
 										<NavDropdown.Item>Orders</NavDropdown.Item>
+									</LinkContainer>
+									<LinkContainer to='/admin/packaginglist'>
+										<NavDropdown.Item>Packagings</NavDropdown.Item>
 									</LinkContainer>
 								</NavDropdown>
 							)}

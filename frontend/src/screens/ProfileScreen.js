@@ -84,6 +84,7 @@ const ProfileScreen = ({ location, history }) => {
 				{successResend && (
 					<Message variant='success'>Verification Mail sent.</Message>
 				)}
+				{errorResend && <Message variant='danger'>{errorResend}</Message>}
 
 				{loading ? (
 					<Loader />
@@ -102,31 +103,39 @@ const ProfileScreen = ({ location, history }) => {
 
 						<Form.Group controlId='email'>
 							<Form.Label>Email Address</Form.Label>
-							<Form.Control
-								type='email'
-								placeholder='Enter email'
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}></Form.Control>
+							{user.isConfirmed ? (
+								<Form.Control
+									className={'form-control is-valid'}
+									type='email'
+									placeholder='Enter email'
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+									readOnly></Form.Control>
+							) : (
+								<Form.Control
+									className={'form-control is-invalid'}
+									type='email'
+									placeholder='Enter email'
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}></Form.Control>
+							)}
+							{user.isConfirmed ? (
+								<i style={{ color: 'green' }}>Verified</i>
+							) : (
+								<i style={{ color: 'red' }}>
+									{loadingResend ? (
+										<Loader />
+									) : (
+										<Button
+											className='btn btn-sm'
+											variant='outline-danger'
+											onClick={resendHandler}>
+											Resend Verification Mail
+										</Button>
+									)}
+								</i>
+							)}
 						</Form.Group>
-						{user.isConfirmed ? (
-							<i className='fas fa-check' style={{ color: 'green' }}>
-								Verified
-							</i>
-						) : (
-							<i className='fas fa-times' style={{ color: 'red' }}>
-								Not Verified
-								{loadingResend ? (
-									<Loader />
-								) : (
-									<Button
-										className='btn btn-sm'
-										variant='outline-danger'
-										onClick={resendHandler}>
-										Resend Verification Mail
-									</Button>
-								)}
-							</i>
-						)}
 
 						<Form.Group controlId='password'>
 							<Form.Label>Password</Form.Label>

@@ -10,9 +10,12 @@ import {
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
+// import { listPackaging } from '../actions/packagingActions'
+// import { savePackagingType } from '../actions/cartActions'
 
 const ProductScreen = ({ history, match }) => {
 	const [qty, setQty] = useState(1)
+
 	const [rating, setRating] = useState(0)
 	const [comment, setComment] = useState('')
 
@@ -44,6 +47,8 @@ const ProductScreen = ({ history, match }) => {
 	}, [dispatch, match, successProductReview, product._id])
 
 	const addToCartHandler = () => {
+		// console.log(packagingType)
+		// dispatch(savePackagingType(packagingType))
 		history.push(`/cart/${match.params.id}?qty=${qty}`)
 	}
 
@@ -54,7 +59,7 @@ const ProductScreen = ({ history, match }) => {
 
 	return (
 		<>
-			<Link className='btn btn-primary my-3' to='/'>
+			<Link className='btn  btn-primary my-3 rounded' to='/'>
 				Go Back
 			</Link>
 			{loading ? (
@@ -67,33 +72,34 @@ const ProductScreen = ({ history, match }) => {
 						<Col md={6}>
 							<Image src={product.image} alt={product.name} fluid />
 						</Col>
-						<Col md={3}>
-							<ListGroup>
-								<ListGroup.Item>
+						<Col md={6}>
+							<ListGroup className='mx-1 my-1 px-1' variant='flush'>
+								<ListGroup>
 									<h3>{product.name}</h3>
-								</ListGroup.Item>
-								<ListGroup.Item>
+								</ListGroup>
+								<ListGroup className='mx-1 my-1 px-1' variant='flush'>
 									<Rating
 										value={product.rating}
 										text={`${product.numReviews} reviews.`}
 									/>
-								</ListGroup.Item>
-								<ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+								</ListGroup>
+								<ListGroup className='mx-1 my-1 px-1' variant='flush'>
+									Price: ${product.price}
+								</ListGroup>
 								<ListGroup className='mx-1 my-1 px-1' variant='flush'>
 									Description: {product.description}
 								</ListGroup>
 							</ListGroup>
-						</Col>
-						<Col md={3}>
-							<ListGroup variant='flush'>
-								<ListGroup.Item>
+
+							<ListGroup className='mx-1 my-1 px-1' variant='flush'>
+								{/* <ListGroup.Item>
 									<Row>
 										<Col>Price:</Col>
 										<Col>
 											<strong>${product.price}</strong>
 										</Col>
 									</Row>
-								</ListGroup.Item>
+								</ListGroup.Item> */}
 								<ListGroup.Item>
 									<Row>
 										<Col>Status:</Col>
@@ -122,9 +128,22 @@ const ProductScreen = ({ history, match }) => {
 										</Row>
 									</ListGroup.Item>
 								)}
+								{/* <ListGroup.Item>
+									{packagings.map((packaging) => (
+										<Form.Check
+											type='radio'
+											label={packaging.name}
+											id={packaging._id}
+											name='PackagingType'
+											value={packaging.name}
+											onChange={(e) =>
+												setPackagingType(e.target.value)
+											}></Form.Check>
+									))}
+								</ListGroup.Item> */}
 								<Button
 									onClick={addToCartHandler}
-									className='btn btn-block mx-1 my-2'
+									className='btn btn-block mx-1 my-2 rounded'
 									type='button'
 									disabled={product.countInStock === 0}>
 									Add to cart
@@ -184,6 +203,7 @@ const ProductScreen = ({ history, match }) => {
 													}></Form.Control>
 											</Form.Group>
 											<Button
+												className='rounded my-auto'
 												disabled={loadingProductReview}
 												type='submit'
 												variant='primary'>
@@ -198,6 +218,33 @@ const ProductScreen = ({ history, match }) => {
 								</ListGroup.Item>
 							</ListGroup>
 						</Col>
+						{/* <Col>
+							<Table striped bordered hover responsive className='table-sm'>
+								<thead>
+									<tr>
+										<th>IMAGE</th>
+										<th>NAME</th>
+										<th>PRICE</th>
+									</tr>
+								</thead>
+								<tbody>
+									{packagings.map((packaging) => (
+										<tr key={packaging._id}>
+											<td>
+												<Image
+													src={packaging.image}
+													alt={packaging.name}
+													height='30px'
+													fluid
+												/>
+											</td>
+											<td>{packaging.name}</td>
+											<td>${packaging.price}</td>
+										</tr>
+									))}
+								</tbody>
+							</Table>
+						</Col> */}
 					</Row>
 				</>
 			)}
