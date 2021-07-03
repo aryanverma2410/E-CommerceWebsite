@@ -61,7 +61,7 @@ const Footer = () => {
 										class='btn btn-outline-primary p-auto m-3'
 										data-bs-toggle='tooltip'
 										data-bs-placement='left'
-										title='Tooltip on left'>
+										title='Facebook'>
 										<i class='fab fa-facebook-f fa-2x'></i>
 									</button>
 
@@ -70,7 +70,7 @@ const Footer = () => {
 										class='btn btn-outline-primary p-auto m-3'
 										data-bs-toggle='tooltip'
 										data-bs-placement='top'
-										title='Tooltip on top'>
+										title='Twitter'>
 										<i class='fab fa-twitter fa-2x'></i>
 									</button>
 
@@ -79,7 +79,7 @@ const Footer = () => {
 										class='btn btn-outline-primary p-auto m-3'
 										data-bs-toggle='tooltip'
 										data-bs-placement='bottom'
-										title='Tooltip on bottom'>
+										title='Instagram'>
 										<i class='fab fa-instagram fa-2x'></i>
 									</button>
 								</Col>
