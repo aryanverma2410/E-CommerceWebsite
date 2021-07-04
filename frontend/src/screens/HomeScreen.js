@@ -21,31 +21,24 @@ const HomeScreen = ({ match }) => {
 	const productList = useSelector((state) => state.productList)
 	const { loading, error, products, page, pages } = productList
 
-	// const buttonHandler = () => {
-	// 	setSortBy1(!sortBy1)
-	// }
-
 	useEffect(() => {
 		dispatch(listProducts(keyword, pageNumber))
 	}, [dispatch, keyword, pageNumber])
 
 	return (
 		<>
-			{/* <Button onClick={buttonHandler}>{sortBy1}</Button> */}
-
 			{!keyword ? (
-				// <ProductCarousel />
-				<Row></Row>
+				<ProductCarousel />
 			) : (
 				<Link to='/' className='btn  btn-primary my-3 rounded-3'>
 					Go Back
 				</Link>
 			)}
-			<Row>
+			<Row className='my-auto'>
 				<Col md={8}>
 					<h1>Latest Products</h1>
 				</Col>
-				<Col md={4}>
+				<Col md={4} className=' py-2'>
 					<select
 						class='form-select  bg-color: transparent font-size:2px'
 						value={sortBy}
