@@ -9,6 +9,10 @@ h1 {
 	font-size: 1.8rem;
 	padding: 1rem 0;
 }
+h6 {
+	font-size: 13px;
+	padding: 1rem 0;
+}
 h2 {
 	font-size: 1.4rem;
 	padding: 0.5rem 0;
@@ -17,6 +21,9 @@ h2 {
 	margin: 0.2rem;
 }
 
+.figure-img {
+	border-radius: 4%;
+}
 /* carousel  */
 .carousel-item-next,
 .carousel-item-prev,
@@ -46,6 +53,17 @@ h2 {
 	.carousel-caption h2 {
 		font-size: 2.5vw;
 	}
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #15b3ac;
+	border-color: #15b3ac;
+}
+.btn-primary:hover {
+	color: #fff;
+	background-color: #179992;
+	border-color: #151515;
 }
 
 /*******************FOOTER CSS***************************************/

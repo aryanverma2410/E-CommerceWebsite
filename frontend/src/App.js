@@ -71,7 +71,7 @@ const App = () => {
 						component={HomeScreen}
 						exact
 					/>
-					<Route path='/category/:cat' component={HomeScreen} exact />
+
 					<Route path='/' component={HomeScreen} exact />
 				</Container>
 			</main>

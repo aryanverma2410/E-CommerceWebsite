@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, Image, ListGroup, Button, Form } from 'react-bootstrap'
+import {
+	Row,
+	Col,
+	Image,
+	ListGroup,
+	Button,
+	Form,
+	Figure,
+} from 'react-bootstrap'
 import Rating from '../components/Rating'
 import {
 	listProductDetails,
@@ -59,7 +67,7 @@ const ProductScreen = ({ history, match }) => {
 
 	return (
 		<>
-			<Link className='btn  btn-primary my-3 rounded' to='/'>
+			<Link className='btn  btn-primary my-3 rounded-3' to='/'>
 				Go Back
 			</Link>
 			{loading ? (
@@ -70,7 +78,7 @@ const ProductScreen = ({ history, match }) => {
 				<>
 					<Row>
 						<Col md={6}>
-							<Image src={product.image} alt={product.name} fluid />
+							<Figure.Image src={product.image} alt={product.name} fluid />
 						</Col>
 						<Col md={6}>
 							<ListGroup className='mx-1 my-1 px-1' variant='flush'>
@@ -143,7 +151,7 @@ const ProductScreen = ({ history, match }) => {
 								</ListGroup.Item> */}
 								<Button
 									onClick={addToCartHandler}
-									className='btn btn-block mx-1 my-2 rounded'
+									className='btn btn-block mx-1 my-2 rounded-3'
 									type='button'
 									disabled={product.countInStock === 0}>
 									Add to cart
@@ -203,7 +211,7 @@ const ProductScreen = ({ history, match }) => {
 													}></Form.Control>
 											</Form.Group>
 											<Button
-												className='rounded my-auto'
+												className='rounded-3 my-auto'
 												disabled={loadingProductReview}
 												type='submit'
 												variant='primary'>
