@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Figure } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { register } from '../actions/userActions'
+import loginPic from '../img/loginPic.jpg'
 
 const RegisterScreen = ({ location, history }) => {
 	const [name, setName] = useState('')
@@ -39,62 +40,81 @@ const RegisterScreen = ({ location, history }) => {
 	}
 
 	return (
-		<FormContainer>
-			<h1>Sign Up</h1>
-			{message && <Message variant='danger'>{message}</Message>}
-			{error && <Message variant='danger'>{error}</Message>}
-			{loading && <Loader />}
-			<Form onSubmit={submitHandler}>
-				<Form.Group controlId='name'>
-					<Form.Label>Name </Form.Label>
-					<Form.Control
-						type='name'
-						placeholder='Enter name'
-						value={name}
-						onChange={(e) => setName(e.target.value)}></Form.Control>
-				</Form.Group>
+		<Row>
+			<Col md={6}>
+				<center>
+					{/* <Figure.Image src={loginPic} alt='Login Image' height='100vh' fluid />
+					 */}
+					<Figure.Image
+						src={loginPic}
+						alt='Login'
+						width={300}
+						// height={180}
+						fluid
+					/>
+				</center>
+			</Col>
+			<Col md={6} className=' py-20'>
+				<FormContainer>
+					<h1>Sign Up</h1>
+					{message && <Message variant='danger'>{message}</Message>}
+					{error && <Message variant='danger'>{error}</Message>}
+					{loading && <Loader />}
+					<Form onSubmit={submitHandler}>
+						<Form.Group controlId='name'>
+							<Form.Label>Name </Form.Label>
+							<Form.Control
+								type='name'
+								placeholder='Enter name'
+								value={name}
+								onChange={(e) => setName(e.target.value)}></Form.Control>
+						</Form.Group>
 
-				<Form.Group controlId='email'>
-					<Form.Label>Email Address</Form.Label>
-					<Form.Control
-						type='email'
-						placeholder='Enter email'
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}></Form.Control>
-				</Form.Group>
+						<Form.Group controlId='email'>
+							<Form.Label>Email Address</Form.Label>
+							<Form.Control
+								type='email'
+								placeholder='Enter email'
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}></Form.Control>
+						</Form.Group>
 
-				<Form.Group controlId='password'>
-					<Form.Label>Password</Form.Label>
-					<Form.Control
-						type={showPassword ? 'name' : 'password'}
-						placeholder='Enter password'
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}></Form.Control>
-				</Form.Group>
+						<Form.Group controlId='password'>
+							<Form.Label>Password</Form.Label>
+							<Form.Control
+								type={showPassword ? 'name' : 'password'}
+								placeholder='Enter password'
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}></Form.Control>
+						</Form.Group>
 
-				<Form.Group controlId='confirmPassword'>
-					<Form.Label>Confirm Password</Form.Label>
-					<Form.Control
-						type='password'
-						placeholder='Conform password'
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}></Form.Control>
-				</Form.Group>
+						<Form.Group controlId='confirmPassword'>
+							<Form.Label>Confirm Password</Form.Label>
+							<Form.Control
+								type='password'
+								placeholder='Conform password'
+								value={confirmPassword}
+								onChange={(e) =>
+									setConfirmPassword(e.target.value)
+								}></Form.Control>
+						</Form.Group>
 
-				<Button type='submit' variant='primary'>
-					Register
-				</Button>
-			</Form>
+						<Button type='submit' variant='primary'>
+							Register
+						</Button>
+					</Form>
 
-			<Row className='py-3'>
-				<Col>
-					Have an account?{' '}
-					<Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-						login
-					</Link>
-				</Col>
-			</Row>
-		</FormContainer>
+					<Row className='py-3'>
+						<Col>
+							Have an account?{' '}
+							<Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+								login
+							</Link>
+						</Col>
+					</Row>
+				</FormContainer>
+			</Col>
+		</Row>
 	)
 }
 
