@@ -8,6 +8,7 @@ const Footer = () => {
 				<Row className='px-5'>
 					<Col className='text-centre py-3' md='4'>
 						<Row>CONTACT US</Row>
+
 						<Row className='py-3'>
 							<Col className='my-auto px-auto' md='1'>
 								<i className='fa fa-map-marker'></i>
