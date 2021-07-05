@@ -5,7 +5,7 @@ import Product from '../components/Product'
 import Message from '../components/Message.js'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col, Jumbotron, Button } from 'react-bootstrap'
 import { listProducts } from '../actions/productActions'
 import ProductCarousel from '../components/ProductCarousel'
 
@@ -29,8 +29,24 @@ const HomeScreen = ({ match }) => {
 		<>
 			{!keyword ? (
 				<>
+					<Jumbotron className='my-0'>
+						<Row>
+							<h6 color='white'>INTRODUCTION ○ VINOVE ○ 2021</h6>
+							<h1 color='white'>
+								One Stop Destination To Decorate Your Kitchen
+							</h1>
+							<p>
+								This is a simple hero unit, a simple jumbotron-style component
+								for calling extra attention to featured content or information.
+							</p>
+						</Row>
+
+						<p>
+							<Button variant='primary'>Get App</Button>
+						</p>
+					</Jumbotron>
 					<ProductCarousel />
-					<Row className='my-auto'>
+					<Row className='my-5'>
 						<Col md={8}>
 							<h1>Latest Products</h1>
 						</Col>

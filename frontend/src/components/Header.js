@@ -5,6 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Nav, Container, NavDropdown, Image } from 'react-bootstrap'
 import { logout } from '../actions/userActions'
 import SearchBox from './SearchBox.js'
+import logo from '../img/logo.png'
 
 const Header = () => {
 	const dispatch = useDispatch()
@@ -21,8 +22,7 @@ const Header = () => {
 				<Container>
 					<LinkContainer to='/'>
 						<Navbar.Brand>
-							<Image src='' alt='Logo' fluid rounded />
-							ProShop
+							<Image src={logo} alt='Logo' fluid />
 						</Navbar.Brand>
 					</LinkContainer>
 					<Navbar.Toggle aria-controls='basic-navbar-nav' />
