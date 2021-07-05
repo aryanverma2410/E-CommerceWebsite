@@ -18,6 +18,7 @@ const ProfileScreen = ({ location, history }) => {
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
 	const [message, setMessage] = useState(null)
+	// eslint-disable-next-line
 	const [isConfirmed, setIsConfirmed] = useState(false)
 
 	const dispatch = useDispatch()

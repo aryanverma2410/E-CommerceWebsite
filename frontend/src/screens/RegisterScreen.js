@@ -13,6 +13,7 @@ const RegisterScreen = ({ location, history }) => {
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
 	const [message, setMessage] = useState(null)
+	// eslint-disable-next-line
 	const [showPassword, setShowPassword] = useState(false)
 
 	const dispatch = useDispatch()

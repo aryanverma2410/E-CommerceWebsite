@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -16,7 +16,6 @@ import Loader from '../components/Loader.js'
 import { listPackagings } from '../actions/packagingActions'
 
 const CartScreen = ({ match, location, history }) => {
-	const pageNumber = match.params.pageNumber || 1
 	const productId = match.params.id
 
 	const qty = location.search ? Number(location.search.split('=')[1]) : 1
@@ -34,12 +33,10 @@ const CartScreen = ({ match, location, history }) => {
 		loading: loadingPackagingList,
 		error: errorPackagingList,
 		packagings,
-		page,
-		pages,
 	} = packagingList
 
 	useEffect(() => {
-		dispatch(listPackagings('', pageNumber))
+		dispatch(listPackagings('', 1))
 		if (productId) {
 			dispatch(addToCart(productId, qty, packagingType))
 		}

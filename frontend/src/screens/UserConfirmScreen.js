@@ -11,9 +11,11 @@ const UserConfirmScreen = ({ match, history }) => {
 	// const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET_EMAIL)
 
 	// const userId = await User.findById(decoded.id).select('-password')
-
+	// eslint-disable-next-line
 	const [name, setName] = useState('')
+	// eslint-disable-next-line
 	const [email, setEmail] = useState('')
+	// eslint-disable-next-line
 	const [isConfirmed, setIsConfirmed] = useState(true)
 
 	const dispatch = useDispatch()
