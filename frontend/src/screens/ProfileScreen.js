@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Form, Button, Row, Col } from 'react-bootstrap'
+import { Table, Form, Button, Row, Col, ListGroup } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -90,7 +90,7 @@ const ProfileScreen = ({ location, history }) => {
 				{loading ? (
 					<Loader />
 				) : error ? (
-					<Message variant='success'>{error}</Message>
+					<Message variant='danger'>{error}</Message>
 				) : (
 					<Form onSubmit={submitHandler}>
 						<Form.Group controlId='name'>
@@ -215,6 +215,24 @@ const ProfileScreen = ({ location, history }) => {
 					</Table>
 				)}
 			</Col>
+			{/* {loading ? (
+				<Loader />
+			) : error ? (
+				<Message variant='danger'>{error}</Message>
+			) : (
+				<>
+					{user.wishlists.length === 0 && <Message>No wishlists</Message>}
+					<ListGroup variant='flush'>
+						{user.wishlists.map((wishlist) => (
+							<ListGroup.Item key={wishlist._id}>
+								<strong>{wishlist.name}</strong>
+								<p>{wishlist.createdAt.substring(0, 10)}</p>
+							</ListGroup.Item>
+						))}
+					</ListGroup>
+				</>
+			)} */}
+			{/*****************TO SHOW WISHLIST ITEMS******************************/}
 		</Row>
 	)
 }

@@ -6,6 +6,22 @@ import { google } from 'googleapis'
 
 const OAuth2 = google.auth.OAuth2
 
+const wishlistSchema = mongoose.Schema(
+	{
+		name: {
+			type: String,
+			required: true,
+		},
+		productWish: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: 'User',
+		},
+	},
+	{
+		timestamps: true,
+	}
+)
 const userSchema = mongoose.Schema(
 	{
 		name: {
@@ -31,6 +47,7 @@ const userSchema = mongoose.Schema(
 			required: true,
 			default: false,
 		},
+		wishlists: [wishlistSchema],
 	},
 	{
 		timestamps: true,

@@ -10,6 +10,7 @@ import {
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
+import { createProductWishlist, getUserDetails } from '../actions/userActions'
 // import { listPackaging } from '../actions/packagingActions'
 // import { savePackagingType } from '../actions/cartActions'
 
@@ -33,6 +34,15 @@ const ProductScreen = ({ history, match }) => {
 		loading: loadingProductReview,
 		error: errorProductReview,
 	} = productReviewCreate
+	const userWishlistCreate = useSelector((state) => state.userWishlistCreate)
+	const {
+		success: successUserWishlist,
+		loading: loadingUserWishlist,
+		error: errorUserWishlist,
+	} = userWishlistCreate
+
+	const userDetails = useSelector((state) => state.userDetails)
+	const { user } = userDetails
 
 	useEffect(() => {
 		if (successProductReview) {
@@ -44,7 +54,8 @@ const ProductScreen = ({ history, match }) => {
 			dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
 		}
 		dispatch(listProductDetails(match.params.id))
-	}, [dispatch, match, successProductReview, product._id])
+		dispatch(getUserDetails('profile'))
+	}, [dispatch, match, successProductReview, product._id, successUserWishlist])
 
 	const addToCartHandler = () => {
 		// console.log(packagingType)
@@ -55,6 +66,9 @@ const ProductScreen = ({ history, match }) => {
 	const submitHandler = (e) => {
 		e.preventDefault()
 		dispatch(createProductReview(match.params.id, { rating, comment }))
+	}
+	const wishlistHandler = () => {
+		dispatch(createProductWishlist(user._id, product._id))
 	}
 
 	return (
@@ -77,15 +91,40 @@ const ProductScreen = ({ history, match }) => {
 								<ListGroup>
 									<h3>{product.name}</h3>
 								</ListGroup>
-								<ListGroup className='mx-1 my-1 px-1' variant='flush'>
-									<Rating
-										value={product.rating}
-										text={`${product.numReviews} reviews.`}
-									/>
-								</ListGroup>
-								<ListGroup className='mx-1 my-1 px-1' variant='flush'>
-									Price: ${product.price}
-								</ListGroup>
+								<Row>
+									<Col md={8}>
+										<ListGroup className='mx-1 my-1 px-1' variant='flush'>
+											<Rating
+												value={product.rating}
+												text={`${product.numReviews} reviews.`}
+											/>
+										</ListGroup>
+										<ListGroup className='mx-1 my-1 px-1' variant='flush'>
+											Price: ${product.price}
+										</ListGroup>
+									</Col>
+									<Col md={1}>
+										{userInfo ? (
+											<Button
+												className='btn btn-light my-3'
+												onClick={wishlistHandler}>
+												{user.wishlists.some(
+													(e) => e.productWish === product._id
+												) ? (
+													<i class='fas fa-heart'></i>
+												) : (
+													<>
+														<i class='far fa-heart'></i>
+													</>
+												)}
+											</Button>
+										) : (
+											<Button disabled>
+												<i class='far fa-heart'></i>
+											</Button>
+										)}
+									</Col>
+								</Row>
 								<ListGroup className='mx-1 my-1 px-1' variant='flush'>
 									Description: {product.description}
 								</ListGroup>

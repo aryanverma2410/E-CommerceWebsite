@@ -3,6 +3,7 @@ import User from '../models/userModel.js'
 import jwt from 'jsonwebtoken'
 import generateEmailToken from '../utils/generateEmailToken.js'
 import generateToken from '../utils/generateToken.js'
+import Product from '../models/productModel.js'
 // @desc Auth user & get token
 // @route POST /api/user/login
 // @access Public
@@ -68,6 +69,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 			email: user.email,
 			isAdmin: user.isAdmin,
 			isConfirmed: user.isConfirmed,
+			wishlists: user.wishlists,
 		})
 	} else {
 		res.status(401)
@@ -253,6 +255,55 @@ const resendUserConfirmationMail = asyncHandler(async (req, res) => {
 	}
 })
 
+// @desc    create new wish
+// @route   POST /api/users/:id/wishlists
+// @access  Private
+const createProductWishlist = asyncHandler(async (req, res) => {
+	const { productId } = req.body
+	const user = await User.findById(req.params.id)
+	const product = await Product.findById(productId)
+	if (user) {
+		const alreadyWishlisted = user.wishlists.find(
+			(r) => r.productWish.toString() === productId.toString()
+		)
+		if (alreadyWishlisted) {
+			const wishlist = {
+				name: product.name,
+				productWish: productId,
+			}
+
+			user.wishlists.pop(wishlist)
+
+			await user.save()
+			res.status(400)
+			res.status(201).json({
+				message: 'Product removed from Wishlist',
+				_id: user._id,
+				name: user.name,
+				productName: product.name,
+			})
+		} else {
+			const wishlist = {
+				name: product.name,
+				productWish: productId,
+			}
+
+			user.wishlists.push(wishlist)
+
+			await user.save()
+			res.status(201).json({
+				message: 'Product added to Wishlist',
+				_id: user._id,
+				name: user.name,
+				productName: product.name,
+			})
+		}
+	} else {
+		res.status(404)
+		throw new Error('User not found')
+	}
+})
+
 export {
 	authUser,
 	registerUser,
@@ -265,4 +316,5 @@ export {
 	getUserByEmailToken,
 	updateUserConfirm,
 	resendUserConfirmationMail,
+	createProductWishlist,
 }

@@ -30,6 +30,9 @@ import {
 	USER_RESEND_REQUEST,
 	USER_RESEND_SUCCESS,
 	USER_RESEND_FAIL,
+	USER_CREATE_WISHLIST_REQUEST,
+	USER_CREATE_WISHLIST_SUCCESS,
+	USER_CREATE_WISHLIST_FAIL,
 } from '../constants/userConstants'
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
@@ -415,3 +418,41 @@ export const resendConfirmationEmail = (user) => async (dispatch, getState) => {
 		})
 	}
 }
+
+export const createProductWishlist =
+	(userId, productId) => async (dispatch, getState) => {
+		try {
+			dispatch({
+				type: USER_CREATE_WISHLIST_REQUEST,
+			})
+
+			const {
+				userLogin: { userInfo },
+			} = getState()
+
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.token}`,
+				},
+			}
+
+			await axios.post(`/api/users/${userId}/wishlists`, { productId }, config)
+
+			dispatch({
+				type: USER_CREATE_WISHLIST_SUCCESS,
+			})
+		} catch (error) {
+			const message =
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message
+			if (message === 'Not authorized, token failed') {
+				dispatch(logout())
+			}
+			dispatch({
+				type: USER_CREATE_WISHLIST_FAIL,
+				payload: message,
+			})
+		}
+	}

@@ -102,6 +102,7 @@ h2 {
 
 .jumbotron {
 	margin-bottom: 5;
+	margin-top: 0;
 	padding-left: 30%;
 	padding-right: 30%;
 	padding-top: 10%;
@@ -122,6 +123,22 @@ h2 {
 }
 .jumbotron h1 {
 	color: white;
+}
+
+.img-wrapper {
+	overflow: hidden;
+}
+
+img.hover-zoom {
+	transition: all 0.3s ease 0s;
+	width: 100%;
+}
+img.hover-zoom:hover {
+	transform: scale(1.25);
+}
+.navbar {
+	padding-bottom: 0%;
+	padding-top: 0%;
 }
 /*******************FOOTER CSS***************************************/
 /*

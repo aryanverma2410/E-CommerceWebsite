@@ -2,7 +2,7 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Navbar, Nav, Container, NavDropdown, Image } from 'react-bootstrap'
+import { Navbar, Nav, Container, NavDropdown, Figure } from 'react-bootstrap'
 import { logout } from '../actions/userActions'
 import SearchBox from './SearchBox.js'
 import logo from '../img/logo.png'
@@ -22,7 +22,7 @@ const Header = () => {
 				<Container>
 					<LinkContainer to='/'>
 						<Navbar.Brand>
-							<Image src={logo} alt='Logo' fluid />
+							<Figure.Image src={logo} alt='Logo' width={150} fluid />
 						</Navbar.Brand>
 					</LinkContainer>
 					<Navbar.Toggle aria-controls='basic-navbar-nav' />

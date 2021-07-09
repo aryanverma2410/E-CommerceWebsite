@@ -27,7 +27,7 @@ const App = () => {
 		<Router>
 			<Header />
 			<main className='py-3'>
-				<Container>
+				<>
 					<Route path='/order/:id' component={OrderScreen} />
 					<Route path='/login' component={LoginScreen} />
 					<Route path='/shipping' component={ShippingScreen} />
@@ -73,7 +73,7 @@ const App = () => {
 					/>
 
 					<Route path='/' component={HomeScreen} exact />
-				</Container>
+				</>
 			</main>
 			<Footer />
 		</Router>

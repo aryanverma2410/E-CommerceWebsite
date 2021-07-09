@@ -12,6 +12,7 @@ import {
 	getUserByEmailToken,
 	updateUserConfirm,
 	resendUserConfirmationMail,
+	createProductWishlist,
 } from '../controllers/userController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
@@ -31,4 +32,5 @@ router
 	.delete(protect, admin, deleteUser)
 	.get(protect, admin, getUserById)
 	.put(protect, admin, updateUser)
+router.route('/:id/wishlists').post(protect, createProductWishlist)
 export default router

@@ -5,7 +5,8 @@ import Product from '../components/Product'
 import Message from '../components/Message.js'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
-import { Row, Col, Jumbotron, Button } from 'react-bootstrap'
+import Jumbo from '../components/Jumbo'
+import { Row, Col, Card } from 'react-bootstrap'
 import { listProducts } from '../actions/productActions'
 import ProductCarousel from '../components/ProductCarousel'
 
@@ -29,24 +30,9 @@ const HomeScreen = ({ match }) => {
 		<>
 			{!keyword ? (
 				<>
-					<Jumbotron className='my-0'>
-						<Row>
-							<h6 color='white'>INTRODUCTION ○ VINOVE ○ 2021</h6>
-							<h1 color='white'>
-								One Stop Destination To Decorate Your Kitchen
-							</h1>
-							<p>
-								This is a simple hero unit, a simple jumbotron-style component
-								for calling extra attention to featured content or information.
-							</p>
-						</Row>
-
-						<p>
-							<Button variant='primary'>Get App</Button>
-						</p>
-					</Jumbotron>
+					<Jumbo />
 					<ProductCarousel />
-					<Row className='my-5'>
+					<Row className='my-5 mx-5'>
 						<Col md={8}>
 							<h1>Latest Products</h1>
 						</Col>
@@ -78,7 +64,7 @@ const HomeScreen = ({ match }) => {
 					</Row>
 				</>
 			) : (
-				<Row>
+				<Row className='mx-5'>
 					<Col md={3}>
 						<Link to='/' className='btn  btn-primary my-3 rounded-3'>
 							Go Back
@@ -121,11 +107,13 @@ const HomeScreen = ({ match }) => {
 			{loading ? (
 				<Loader />
 			) : error ? (
-				<Message variant='danger'>{error}</Message>
+				<Message variant='danger' className='mx-5'>
+					{error}
+				</Message>
 			) : (
 				<>
 					{Number(sortBy) === 1 ? (
-						<Row>
+						<Row className='mx-5'>
 							{/* {console.log('SortBy:Latest Products')} */}
 							{products.reverse().map((product) => (
 								<Col key={product._id} sm={12} md={6} lg={4} xl={3}>
@@ -136,7 +124,7 @@ const HomeScreen = ({ match }) => {
 					) : (
 						<>
 							{Number(sortBy) === 2 ? (
-								<Row>
+								<Row className='mx-5'>
 									{/* {console.log('Low to High')} */}
 									{products
 										.sort((a, b) => a.price - b.price)
@@ -149,7 +137,7 @@ const HomeScreen = ({ match }) => {
 							) : (
 								<>
 									{Number(sortBy) === 3 ? (
-										<Row>
+										<Row className='mx-5'>
 											{/* {console.log('High to Low')} */}
 											{products
 												.sort((b, a) => a.price - b.price)
@@ -162,7 +150,7 @@ const HomeScreen = ({ match }) => {
 									) : (
 										<>
 											{Number(sortBy) === 4 ? (
-												<Row>
+												<Row className='mx-5'>
 													{/* {console.log('Avg. customer Review')} */}
 													{products
 														.sort((b, a) => a.rating - b.rating)
@@ -180,7 +168,7 @@ const HomeScreen = ({ match }) => {
 											) : (
 												<>
 													{Number(sortBy) === 5 ? (
-														<Row>
+														<Row className='mx-5'>
 															{/* {console.log('Name: A to Z')} */}
 															{products
 																.sort((a, b) =>
@@ -203,7 +191,7 @@ const HomeScreen = ({ match }) => {
 																))}
 														</Row>
 													) : (
-														<Row>
+														<Row className='mx-5'>
 															{/* {console.log('Name:Z to A')} */}
 															{products
 																.sort((b, a) =>
