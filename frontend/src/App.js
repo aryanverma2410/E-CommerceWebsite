@@ -21,10 +21,12 @@ import ProductEditScreen from './screens/ProductEditScreen'
 import PackagingEditScreen from './screens/PackagingEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
 import PackagingListScreen from './screens/PackagingListScreen'
+import ScrollToTop from './components/ScrollToTop'
 
 const App = () => {
 	return (
 		<Router>
+			<ScrollToTop />
 			<Header />
 			<main className='py-3'>
 				<>
