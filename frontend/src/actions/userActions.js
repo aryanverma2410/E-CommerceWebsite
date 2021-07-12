@@ -33,6 +33,12 @@ import {
 	USER_CREATE_WISHLIST_REQUEST,
 	USER_CREATE_WISHLIST_SUCCESS,
 	USER_CREATE_WISHLIST_FAIL,
+	USER_RESET_PASSWORD_EMAIL_REQUEST,
+	USER_RESET_PASSWORD_EMAIL_SUCCESS,
+	USER_RESET_PASSWORD_EMAIL_FAIL,
+	USER_RESET_PASSWORD_REQUEST,
+	USER_RESET_PASSWORD_SUCCESS,
+	USER_RESET_PASSWORD_FAIL,
 } from '../constants/userConstants'
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
@@ -313,41 +319,30 @@ export const updateUser = (user) => async (dispatch, getState) => {
 	}
 }
 
-export const getUserConfirmDetails =
-	(emailToken) => async (dispatch, getState) => {
-		try {
-			dispatch({
-				type: USER_DETAILS_REQUEST,
-			})
+export const getUserConfirmDetails = (emailToken) => async (dispatch) => {
+	try {
+		dispatch({
+			type: USER_DETAILS_REQUEST,
+		})
 
-			// const {
-			// 	userLogin: { userInfo },
-			// } = getState()
+		const { data } = await axios.get(`/api/users/confirmation/${emailToken}`)
 
-			// const config = {
-			// 	headers: {
-			// 		Authorization: `Bearer ${userInfo.token}`,
-			// 	},
-			// }
+		dispatch({
+			type: USER_DETAILS_SUCCESS,
+			payload: data,
+		})
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
 
-			const { data } = await axios.get(`/api/users/confirmation/${emailToken}`)
-
-			dispatch({
-				type: USER_DETAILS_SUCCESS,
-				payload: data,
-			})
-		} catch (error) {
-			const message =
-				error.response && error.response.data.message
-					? error.response.data.message
-					: error.message
-
-			dispatch({
-				type: USER_DETAILS_FAIL,
-				payload: message,
-			})
-		}
+		dispatch({
+			type: USER_DETAILS_FAIL,
+			payload: message,
+		})
 	}
+}
 
 export const confirmUser = (emailToken) => async (dispatch) => {
 	try {
@@ -456,3 +451,90 @@ export const createProductWishlist =
 			})
 		}
 	}
+
+export const sendPasswordResetEmail = (email) => async (dispatch) => {
+	try {
+		dispatch({
+			type: USER_RESET_PASSWORD_EMAIL_REQUEST,
+		})
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}
+
+		const { data } = await axios.post('/api/users/reset', { email }, config)
+
+		dispatch({
+			type: USER_RESET_PASSWORD_EMAIL_SUCCESS,
+			payload: data,
+		})
+	} catch (error) {
+		dispatch({
+			type: USER_RESET_PASSWORD_EMAIL_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}
+
+export const getUserResetPasswordDetails = (emailToken) => async (dispatch) => {
+	try {
+		dispatch({
+			type: USER_DETAILS_REQUEST,
+		})
+
+		const { data } = await axios.get(`/api/users/reset/${emailToken}`)
+
+		dispatch({
+			type: USER_DETAILS_SUCCESS,
+			payload: data,
+		})
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message
+
+		dispatch({
+			type: USER_DETAILS_FAIL,
+			payload: message,
+		})
+	}
+}
+
+export const resetUserPassword = (emailToken, password) => async (dispatch) => {
+	try {
+		dispatch({
+			type: USER_RESET_PASSWORD_REQUEST,
+		})
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}
+
+		const { data } = await axios.put(
+			`/api/users/reset/${emailToken}`,
+			{ password },
+			config
+		)
+
+		dispatch({
+			type: USER_RESET_PASSWORD_SUCCESS,
+			payload: data,
+		})
+	} catch (error) {
+		dispatch({
+			type: USER_RESET_PASSWORD_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}

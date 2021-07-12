@@ -166,39 +166,6 @@ const updateUser = asyncHandler(async (req, res) => {
 	}
 })
 
-// @desc    Confirm user email
-// @route   GET /api/users/confirm/:token
-// @access  Public
-// const confirmUser = asyncHandler(async (req, res) => {
-// 	try {
-// 		const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET_EMAIL)
-
-// 		const user = await User.findById(decoded.id).updateOne({
-// 			isConfirmed: true,
-// 		})
-// 		if (user) {
-// 			user.isConfirmed = true
-// 			const updatedUser = await user
-
-// 			res.json({
-// 				_id: updatedUser._id,
-// 				name: updatedUser.name,
-// 				email: updatedUser.email,
-// 				isAdmin: updatedUser.isAdmin,
-// 				isConfirmed: updatedUser.isConfirmed,
-// 			})
-// 			console.log(`confirmed!`.green.underline.bold)
-// 		} else {
-// 			res.status(404)
-// 			throw new Error('User not found')
-// 		}
-// 	} catch (error) {
-// 		console.log(error)
-// 		res.status(401)
-// 		throw new Error('Email Confirmation Failed')
-// 	}
-// })
-
 const getUserByEmailToken = asyncHandler(async (req, res) => {
 	const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET_EMAIL)
 
@@ -252,6 +219,44 @@ const resendUserConfirmationMail = asyncHandler(async (req, res) => {
 	} else {
 		res.status(404)
 		throw new Error('User not Found')
+	}
+})
+// @desc Auth user & get token
+// @route POST /api/user/reset
+// @access Public
+const resetUserPasswordMail = asyncHandler(async (req, res) => {
+	const { email } = req.body
+	const user = await User.findOne({ email })
+
+	if (user) {
+		res.status(201).json({
+			emailToken: generateEmailToken(user._id),
+		})
+		user.sendResetPasswordEmail(user)
+	} else {
+		res.status(401)
+		throw new Error('This Email is not registered')
+	}
+})
+
+// @desc    Reset user password
+// @route   PUT /api/users/reset/:token
+// @access  Private
+const updateUserPassword = asyncHandler(async (req, res) => {
+	const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET_EMAIL)
+
+	const user = await User.findById(decoded.id).select('-password')
+
+	if (user) {
+		user.name = req.body.name || user.name
+		user.password = req.body.password || user.password
+
+		const updatedUser = await user.save()
+
+		res.json({ message: `Password Updated for ${user.name} <${user.email}>` })
+	} else {
+		res.status(404)
+		throw new Error('User not found')
 	}
 })
 
@@ -316,5 +321,7 @@ export {
 	getUserByEmailToken,
 	updateUserConfirm,
 	resendUserConfirmationMail,
+	resetUserPasswordMail,
+	updateUserPassword,
 	createProductWishlist,
 }

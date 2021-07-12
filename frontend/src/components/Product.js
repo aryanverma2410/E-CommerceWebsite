@@ -5,10 +5,10 @@ const Product = ({ product }) => {
 	return (
 		<Card className='my-3 px-1 py-1 rounded'>
 			<Link to={`/product/${product._id}`} style={{ textDecoration: 'none' }}>
-				<Card.Header className='flex-column h-100'>{product.name}</Card.Header>
 				<Card.Header>
-					<strong></strong>
+					<strong>{product.name}</strong>
 				</Card.Header>
+
 				<div className='img-wrapper'>
 					<img src={product.image} variant='top' className='hover-zoom' />
 				</div>

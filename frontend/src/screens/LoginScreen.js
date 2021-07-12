@@ -70,9 +70,16 @@ const LoginScreen = ({ location, history }) => {
 								onChange={(e) => setPassword(e.target.value)}></Form.Control>
 						</Form.Group>
 
-						<Button type='submit' variant='primary'>
-							Sign In
-						</Button>
+						<Row className='py-3'>
+							<Col md={5}>
+								<Button type='submit' variant='primary'>
+									Sign In
+								</Button>
+							</Col>
+							<Col md={7} className='my-auto'>
+								<Link to={'/reset'}>Forgot Password?</Link>
+							</Col>
+						</Row>
 					</Form>
 
 					<Row className='py-3'>

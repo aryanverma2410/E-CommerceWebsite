@@ -161,6 +161,45 @@ userSchema.methods.sendConfirmationEmail = async function (enteredUser) {
 		})
 }
 
+userSchema.methods.sendResetPasswordEmail = async function (enteredUser) {
+	//send mail fucntion
+	const emailToken = generateEmailToken(enteredUser._id)
+
+	// if (process.env.NODE_ENV === 'developement') {
+	// 	const url = `http://localhost:3000/api/user/confirmation/${emailToken}`
+	// } else {
+	// 	const url = `https://avproshop.herokuapp.com/api/user/confirmation/${emailToken}`
+	// }
+	const url = `http://localhost:3000/api/user/reset/${emailToken}`
+	const url2 = `https://avproshop.herokuapp.com/api/user/reset/${emailToken}`
+	let emailTransporter = await createTransporter()
+	await emailTransporter
+		.sendMail({
+			from: process.env.GMAIL_USER,
+			to: `${enteredUser.email}`,
+			subject: 'Password Reset Request',
+			html: `Dear ${enteredUser.name} you requested to reset your password <a href=${url2}>Click Here</a> to reset your password. <br> If Above link dosen't work, <a href=${url}>click Here</a> <br>If you didnt request a password reset,contact our support`,
+			//
+			auth: {
+				user: process.env.GMAIL_USER,
+				refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+				// 	accessToken:
+				// 		'ya29.a0ARrdaM9PMQClc-5BPH4TvAUzmLRIe2ip93SjHJM_f0sOxrzPz3wCFEjGfO1DekLkW2nQdQWVk9xk669I_Z-4bYhNMlLeYd9RWAHv3ad2_ALjYMXWKV-QZFvPhNhrvezuIL-ZgM-ZvVxy4hIEW1-rWmjcL3vq',
+			},
+		})
+		.then(() => {
+			console.log(
+				` Reset password email sent! to user ${enteredUser.name} at ${enteredUser.email}`
+			)
+		})
+		.catch((error) => {
+			console.log(
+				`${enteredUser.name} <${enteredUser.email}> Reset password email was not sent`
+			)
+			console.error(error)
+		})
+}
+
 const User = mongoose.model('User', userSchema)
 
 export default User

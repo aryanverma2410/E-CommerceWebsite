@@ -8,7 +8,7 @@ import {
 	createProductReview,
 } from '../actions/productActions.js'
 import Message from '../components/Message'
-import Loader from '../components/Loader'
+import Loader from '../components/Loader2'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import { createProductWishlist, getUserDetails } from '../actions/userActions'
 // import { listPackaging } from '../actions/packagingActions'
@@ -77,7 +77,7 @@ const ProductScreen = ({ history, match }) => {
 				Go Back
 			</Link>
 			{loading ? (
-				<Loader />
+				<Loader {...{ size: 300 }} />
 			) : error ? (
 				<Message variant='danger'>{error}</Message>
 			) : (
@@ -210,7 +210,7 @@ const ProductScreen = ({ history, match }) => {
 											Review submitted successfully
 										</Message>
 									)}
-									{loadingProductReview && <Loader />}
+									{loadingProductReview && <Loader {...{ size: 300 }} />}
 									{errorProductReview && (
 										<Message variant='danger'>{errorProductReview}</Message>
 									)}

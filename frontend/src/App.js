@@ -22,6 +22,8 @@ import PackagingEditScreen from './screens/PackagingEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
 import PackagingListScreen from './screens/PackagingListScreen'
 import ScrollToTop from './components/ScrollToTop'
+import ResetPasswordMailScreen from './screens/ResetPasswordEmailScreen'
+import ResetPasswordScreen from './screens/ResetPasswordScreen'
 
 const App = () => {
 	return (
@@ -32,6 +34,7 @@ const App = () => {
 				<>
 					<Route path='/order/:id' component={OrderScreen} />
 					<Route path='/login' component={LoginScreen} />
+					<Route path='/reset' component={ResetPasswordMailScreen} />
 					<Route path='/shipping' component={ShippingScreen} />
 					<Route path='/placeorder' component={PlaceOrderScreen} />
 					<Route path='/payment' component={PaymentScreen} />
@@ -44,6 +47,10 @@ const App = () => {
 					<Route
 						path='/api/user/confirmation/:token'
 						component={UserConfirmScreen}
+					/>
+					<Route
+						path='/api/user/reset/:token'
+						component={ResetPasswordScreen}
 					/>
 					<Route
 						path='/admin/productlist'
