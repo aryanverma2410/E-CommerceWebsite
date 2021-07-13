@@ -276,8 +276,8 @@ const createProductWishlist = asyncHandler(async (req, res) => {
 				name: product.name,
 				productWish: productId,
 			}
-
-			user.wishlists.pop(wishlist)
+			// user.wishlists.pop(wishlist)
+			alreadyWishlisted.remove()
 
 			await user.save()
 			res.status(400)

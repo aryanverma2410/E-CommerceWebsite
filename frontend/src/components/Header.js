@@ -60,6 +60,12 @@ const Header = () => {
 								</LinkContainer>
 							</NavDropdown>
 
+							<LinkContainer to='/wishlist'>
+								<Nav.Link>
+									{' '}
+									<i className='fas fa-heart'></i>
+								</Nav.Link>
+							</LinkContainer>
 							<LinkContainer to='/cart'>
 								<Nav.Link>
 									{' '}

@@ -24,6 +24,7 @@ import PackagingListScreen from './screens/PackagingListScreen'
 import ScrollToTop from './components/ScrollToTop'
 import ResetPasswordMailScreen from './screens/ResetPasswordEmailScreen'
 import ResetPasswordScreen from './screens/ResetPasswordScreen'
+import WishlistScreen from './screens/WishlistScreen'
 
 const App = () => {
 	return (
@@ -40,6 +41,7 @@ const App = () => {
 					<Route path='/payment' component={PaymentScreen} />
 					<Route path='/register' component={RegisterScreen} />
 					<Route path='/profile' component={ProfileScreen} />
+					<Route path='/wishlist' component={WishlistScreen} />
 					<Route path='/product/:id' component={ProductScreen} />
 					<Route path='/cart/:id?' component={CartScreen} />
 					<Route path='/admin/userlist' component={UserListScreen} />

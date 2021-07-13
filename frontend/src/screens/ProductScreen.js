@@ -8,7 +8,7 @@ import {
 	createProductReview,
 } from '../actions/productActions.js'
 import Message from '../components/Message'
-import Loader from '../components/Loader2'
+import Loader from '../components/Loader'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import { createProductWishlist, getUserDetails } from '../actions/userActions'
 // import { listPackaging } from '../actions/packagingActions'
@@ -55,7 +55,7 @@ const ProductScreen = ({ history, match }) => {
 		}
 		dispatch(listProductDetails(match.params.id))
 		dispatch(getUserDetails('profile'))
-	}, [dispatch, match, successProductReview, product._id, successUserWishlist])
+	}, [dispatch, match, successProductReview, successUserWishlist])
 
 	const addToCartHandler = () => {
 		// console.log(packagingType)
@@ -77,7 +77,7 @@ const ProductScreen = ({ history, match }) => {
 				Go Back
 			</Link>
 			{loading ? (
-				<Loader {...{ size: 300 }} />
+				<Loader />
 			) : error ? (
 				<Message variant='danger'>{error}</Message>
 			) : (
@@ -210,7 +210,7 @@ const ProductScreen = ({ history, match }) => {
 											Review submitted successfully
 										</Message>
 									)}
-									{loadingProductReview && <Loader {...{ size: 300 }} />}
+									{loadingProductReview && <Loader />}
 									{errorProductReview && (
 										<Message variant='danger'>{errorProductReview}</Message>
 									)}
