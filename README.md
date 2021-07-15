@@ -31,6 +31,8 @@ nodemailer and gmail integration.
 - Database seeder (products & users)
 - Wishlisting an Item
 - Search by category
+- users CRUD
+- Products CRUD
 - Packaging type CRUD
 - Sort the products by name,price and avg.customer review
 
