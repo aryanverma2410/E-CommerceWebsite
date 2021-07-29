@@ -9,6 +9,7 @@ import {
 	Card,
 	ListGroup,
 	Table,
+	Figure,
 } from 'react-bootstrap'
 import Message from '../components/Message'
 import { addToCart, removeFromCart } from '../actions/cartActions'
@@ -190,9 +191,10 @@ const CartScreen = ({ match, location, history }) => {
 								{packagings.map((packaging) => (
 									<tr key={packaging._id} md={1}>
 										<td>
-											<Image
+											<Figure.Image
 												src={packaging.image}
 												alt={packaging.name}
+												width={25}
 												fluid
 												rounded
 											/>

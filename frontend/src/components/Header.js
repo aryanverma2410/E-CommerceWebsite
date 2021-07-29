@@ -2,7 +2,14 @@ import React from 'react'
 import { Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Navbar, Nav, Container, NavDropdown, Figure } from 'react-bootstrap'
+import {
+	Navbar,
+	Nav,
+	Container,
+	NavDropdown,
+	Figure,
+	Collapse,
+} from 'react-bootstrap'
 import { logout } from '../actions/userActions'
 import SearchBox from './SearchBox.js'
 import logo from '../img/logo.png'
